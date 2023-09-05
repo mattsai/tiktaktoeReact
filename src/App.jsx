@@ -21,18 +21,15 @@ function App() {
 
   const board = Array(9).fill(null);
   return (
+    
     <main className='container'>
       <h1>tik tak toex </h1>
       <section className='game-area'>
         {
           board.map((_, index) => {
             return (
-              <Square index={index} key={index}> x </Square>
-              // <div className='cell' key={index}>
-              //   <span className='cellContent'>
-              //     {index}
-              //   </span>
-              // </div>
+              <Square index={index} key={index}> xx </Square>
+                        
           )})
         }
       </section>
