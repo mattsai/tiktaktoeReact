@@ -1,24 +1,9 @@
 import { useState } from 'react'
 import './App.css'
-
-
-//later will be cat and dog 
-const TURNS = {
-  X: '🐱',
-  O: '🐶'
-}
-
-
-const Square = ({children,updateBoard,index})=>{
-  const handleClick = () =>{
-    updateBoard(index)
-  }
-  return(
-    <div onClick={handleClick} className='square'>
-        {children}
-    </div>
-  )
-}
+import confetti from 'canvas-confetti'
+import { Square } from './Components/Square'
+import { TURNS,winningCombinations} from './Constants/constants.js'
+import { WinnerModal } from './Components/WinnerModal'
 
 function App() {
 
@@ -26,17 +11,7 @@ function App() {
   const [turn,setTurn] = useState(TURNS.X);
   const [winner,setWinner] = useState(-1); // 1 winner ,  0 Tie
 
-  const winningCombinations = [
-    [0, 1, 2], 
-    [3, 4, 5], 
-    [6, 7, 8], 
-    [0, 3, 6], 
-    [1, 4, 7], 
-    [2, 5, 8], 
-    [0, 4, 8],
-    [2, 4, 6],
-  ];
-
+  
   const checkWinner= (newBoard) =>{
     for(const  x of winningCombinations){
       const [p1,p2,p3] = x;
@@ -60,10 +35,11 @@ function App() {
 
     const isWinner= checkWinner(newBoard)
     if(isWinner) {
-      console.log('Winner ',isWinner)
+      // console.log('Winner ',isWinner)
+      confetti()
       setWinner(isWinner)
     }else if(boardFull(newBoard)){
-      console.log('0 tie')
+      // console.log('0 tie')
       setWinner('-')
     }
   }
@@ -73,51 +49,29 @@ function App() {
     setBoard(Array(9).fill(null));
     setWinner(-1);
     setTurn(TURNS.X);
-
   }
-  return (
-    
+
+  return (  
     <main className='container'>
-      <h1>tik tak toex </h1>
+      <h1>^•ﻌ•^ tik tak toe </h1>
       <h2> Turn :  {turn}  </h2>
       <section className='game-area'>
         {
-          board.map((_, index) => {
+          board.map((square, index) => {
             return (
             <Square 
               index={index} 
               key={index} 
               updateBoard={updateBoard} 
             >  
-              {board[index]} 
+              {square} 
             </Square>
                         
           )})
         }
       </section>
 
-      {
-        winner !== -1 && (
-          <section className='winner-modal'>
-            <div className="text">
-              <h2>
-                {
-                  winner !== 0 ?   "Winner " : "Tie"
-                }
-              </h2>
-            </div>
-            <header className='win'>
-              {winner && winner}
-            </header>
-              
-            <footer> 
-              <button onClick={resetGame}>Reset Game</button>
-            </footer>
-          
-          </section>
-          
-        )
-      }
+      <WinnerModal winner={winner} resetGame={resetGame} />
     </main>
   )
 }
