@@ -4,8 +4,8 @@ import './App.css'
 
 //later will be cat and dog 
 const TURNS = {
-  X: 'X',
-  O: 'O'
+  X: '🐱',
+  O: '🐶'
 }
 
 
@@ -46,7 +46,9 @@ function App() {
     }
     return null
   }
-
+  const boardFull = (newBoard) =>{
+    return newBoard.every(square => square !== null)
+  }
   const updateBoard = (index) =>{
     if(board[index] || winner>0) return
     const newBoard =[...board]
@@ -60,6 +62,9 @@ function App() {
     if(isWinner) {
       console.log('Winner ',isWinner)
       setWinner(isWinner)
+    }else if(boardFull(newBoard)){
+      console.log('0 tie')
+      setWinner('-')
     }
   }
 
@@ -97,7 +102,7 @@ function App() {
             <div className="text">
               <h2>
                 {
-                  winner === 0 ? "Tie" : "Winner "
+                  winner !== 0 ?   "Winner " : "Tie"
                 }
               </h2>
             </div>
